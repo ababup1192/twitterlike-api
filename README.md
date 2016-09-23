@@ -11,3 +11,9 @@ rake init
 ```
 rake test
 ```
+
+## Server start
+
+```
+rake start
+```
