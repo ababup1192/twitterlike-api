@@ -13,12 +13,12 @@ class MainApp < Sinatra::Base
     'index'
   end
   get '/user' do
-    users = User.db
+    users = User.new.db
     users.all.to_json
   end
   post '/user', provides: :json do
     json_hash = JSON.parse(request.body.read)
-    status, message = User.save(json_hash)
+    status, message = User.new.save(json_hash)
     case status
     when :ok
       message

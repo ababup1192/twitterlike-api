@@ -1,15 +1,17 @@
-task :default => [:start]
+task default: [:start]
 
 task :init do
-  system "bundle install --path vendor/bundle --without production"
+  path = 'data'.freeze
+  FileUtils.mkdir_p(path) unless FileTest.exist?(path)
+  system 'bundle install --path vendor/bundle --without production'
 end
 
 task :test do
-  Dir.glob('./test/*_test.rb').each { |test_file|
+  Dir.glob('./test/*_test.rb').each do |test_file|
     system "bundle exec ruby #{test_file}"
-  }
+  end
 end
 
 task :start do
-  system "bundle exec rackup -o 0.0.0.0"
+  system 'bundle exec rackup -o 0.0.0.0'
 end
