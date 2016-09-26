@@ -27,4 +27,15 @@ class MainApp < Sinatra::Base
       message
     end
   end
+  post '/user/auth', provides: :json do
+    json_hash = JSON.parse(request.body.read, symbolize_names: true)
+    status, message = User.new.auth(json_hash)
+    case status
+    when :ok
+      true
+    when :error
+      status(400)
+      message
+    end
+  end
 end

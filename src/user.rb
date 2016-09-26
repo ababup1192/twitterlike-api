@@ -25,4 +25,23 @@ class User
   rescue => _
     [:error, { error: 'This user already exists.' }.to_json]
   end
+
+  def auth(hash)
+    name = hash[:name]
+    pass = hash[:password]
+    user = @db.where(name: name).first
+    if user.nil? == false
+      salt = user[:salt]
+      hashed_pass = Auth.hashed_password(pass, salt)
+      success = @db.where(name: name, password: hashed_pass).empty? == false
+
+      if success
+        [:ok, nil]
+      else
+        [:error, { error: 'Authentication failed' }.to_json]
+      end
+    else
+      [:error, { error: 'This user does not exists.' }.to_json]
+    end
+  end
 end
