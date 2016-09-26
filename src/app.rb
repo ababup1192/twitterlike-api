@@ -17,7 +17,7 @@ class MainApp < Sinatra::Base
     users.all.to_json
   end
   post '/user', provides: :json do
-    json_hash = JSON.parse(request.body.read)
+    json_hash = JSON.parse(request.body.read, symbolize_names: true)
     status, message = User.new.save(json_hash)
     case status
     when :ok

@@ -15,7 +15,7 @@ class UserTest < Test::Unit::TestCase
   def test_save_ok
     DB.drop_table(:user)
     users = User.new(DB)
-    result = users.save(name: 'abc')
+    result = users.save(name: 'abc', password: 'password')
 
     assert_equal [:ok, 1.to_json], result
   end
@@ -23,8 +23,8 @@ class UserTest < Test::Unit::TestCase
   def test_save_dup_error
     DB.drop_table(:user)
     users = User.new(DB)
-    users.save(name: 'abc')
-    result = users.save(name: 'abc')
+    users.save(name: 'abc', password: 'password')
+    result = users.save(name: 'abc', password: 'password')
     err_msg = { error: 'This user already exists.' }.to_json.freeze
 
     assert_equal [:error, err_msg], result

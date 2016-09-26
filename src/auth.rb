@@ -5,7 +5,7 @@ require 'securerandom'
 module Auth
   # ハッシュ化されたパスワードを生成する
   def self.generate_hashed_password(password)
-    OpenSSL::Digest::SHA256.digest(password)
+    OpenSSL::Digest::SHA256.hexdigest(password)
   end
 
   # ストレッチする
