@@ -22,6 +22,18 @@ class SessionTest < Test::Unit::TestCase
     _, id = users.save(name: 'abc', password: 'password')
     result = sessions.save(id.to_i)
 
+    p sessions.db.all
+
     assert_equal 1, result
+  end
+
+  def test_save_fail
+    User.new(DB)
+    DB.drop_table(:user)
+    DB.drop_table(:session)
+    sessions = Session.new(DB)
+    result = sessions.save(1)
+
+    assert_equal nil, result
   end
 end

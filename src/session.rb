@@ -22,7 +22,7 @@ class Session
     users = User.new(@sqlite_db).db
 
     return if users.where(id: user_id).empty?
-    token = SecureRandom.base64
+    token = SecureRandom.base64(50)
     old_session = @db.where(user_id: user_id)
     old_session.delete unless old_session.empty?
 
