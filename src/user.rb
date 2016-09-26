@@ -47,7 +47,7 @@ class User
     if user.empty? == false
       id = user.first[:id]
       token = Session.new(@sqlite_db).save(id)
-      [:ok, token]
+      [:ok, { id: id, token: token }.to_json]
     else
       [:error, { error: 'Authentication failed' }.to_json]
     end
