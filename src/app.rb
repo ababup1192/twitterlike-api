@@ -34,7 +34,7 @@ class MainApp < Sinatra::Base
     when :ok
       true
     when :error
-      status(400)
+      status(401)
       message
     end
   end

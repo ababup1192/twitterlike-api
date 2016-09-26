@@ -31,17 +31,21 @@ class User
     pass = hash[:password]
     user = @db.where(name: name).first
     if user.nil? == false
-      salt = user[:salt]
-      hashed_pass = Auth.hashed_password(pass, salt)
-      success = @db.where(name: name, password: hashed_pass).empty? == false
-
-      if success
-        [:ok, nil]
-      else
-        [:error, { error: 'Authentication failed' }.to_json]
-      end
+      _auth(user, name, pass)
     else
       [:error, { error: 'This user does not exists.' }.to_json]
+    end
+  end
+
+  private def _auth(user, name, pass)
+    salt = user[:salt]
+    hashed_pass = Auth.hashed_password(pass, salt)
+    success = @db.where(name: name, password: hashed_pass).empty? == false
+
+    if success
+      [:ok, nil]
+    else
+      [:error, { error: 'Authentication failed' }.to_json]
     end
   end
 end
