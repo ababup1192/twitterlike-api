@@ -32,7 +32,7 @@ class MainApp < Sinatra::Base
     status, message = User.new.auth(json_hash)
     case status
     when :ok
-      true
+      message
     when :error
       status(401)
       message

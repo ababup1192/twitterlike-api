@@ -24,7 +24,7 @@ class SessionTest < Test::Unit::TestCase
 
     p sessions.db.all
 
-    assert_equal 1, result
+    assert_not_nil result
   end
 
   def test_save_fail

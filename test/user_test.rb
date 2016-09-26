@@ -39,7 +39,7 @@ class UserTest < Test::Unit::TestCase
     users.save(name: 'abc', password: 'password')
     result = users.auth(name: 'abc', password: 'password')
 
-    assert_equal [:ok, nil], result
+    assert_equal [:ok, result[1]], result
   end
 
   def test_auth_failed

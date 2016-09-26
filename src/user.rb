@@ -1,6 +1,7 @@
 require 'sequel'
 require 'sqlite3'
 require 'json'
+require_relative 'session'
 require_relative 'auth'
 
 # Model User
@@ -14,6 +15,7 @@ class User
       String :salt
       Time :create_time
     end
+    @sqlite_db = db
     @db = db[:user]
   end
 
@@ -40,10 +42,12 @@ class User
   private def _auth(user, name, pass)
     salt = user[:salt]
     hashed_pass = Auth.hashed_password(pass, salt)
-    success = @db.where(name: name, password: hashed_pass).empty? == false
+    user = @db.where(name: name, password: hashed_pass)
 
-    if success
-      [:ok, nil]
+    if user.empty? == false
+      id = user.first[:id]
+      token = Session.new(@sqlite_db).save(id)
+      [:ok, token]
     else
       [:error, { error: 'Authentication failed' }.to_json]
     end

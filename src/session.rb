@@ -23,10 +23,11 @@ class Session
 
     return if users.where(id: user_id).empty?
     token = SecureRandom.base64(50)
-    old_session = @db.where(user_id: user_id)
-    old_session.delete unless old_session.empty?
+    # Delete old session
+    @db.where(user_id: user_id).delete
 
     new_session = { token: token, user_id: user_id, create_time: time }
     @db.insert(new_session)
+    token
   end
 end
