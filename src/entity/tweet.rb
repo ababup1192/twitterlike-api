@@ -17,7 +17,9 @@ class Tweet
     @db = db[:tweet]
   end
 
-  def save(user_id, text, time = Time.now)
+  def save(hash, time = Time.now)
+    user_id = hash[:user_id]
+    text = hash[:text]
     users = User.new(@sqlite_db).db
 
     if users.where(id: user_id).empty? == false

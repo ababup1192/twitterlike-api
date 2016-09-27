@@ -33,14 +33,14 @@ class UserTest < Test::Unit::TestCase
 
     expected = [:ok,
                 { id: 1, text: TEXT1, user_id: 1, create_time: TIME1.to_s }]
-    status, json = tweets.save(1, TEXT1, TIME1)
+    status, json = tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
 
     assert_equal expected, [status, JSON.parse(json, symbolize_names: true)]
   end
 
   def test_save_fail
     tweets = Tweet.new(DB)
-    result = tweets.save(1, 'fail tweet')
+    result = tweets.save(user_id: 1, text: 'fail tweet')
     err_msg = { error: 'The tweet user does not exist.' }.to_json.freeze
 
     assert_equal [:error, err_msg], result
@@ -53,8 +53,8 @@ class UserTest < Test::Unit::TestCase
     expected = [:ok,
                 { id: 2, text: TEXT2, user_id: 1, create_time: TIME2.to_s }]
 
-    tweets.save(1, TEXT1, TIME1)
-    status, json = tweets.save(1, TEXT2, TIME2)
+    tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
+    status, json = tweets.save({ user_id: 1, text: TEXT2 }, TIME2)
 
     assert_equal expected, [status, JSON.parse(json, symbolize_names: true)]
   end

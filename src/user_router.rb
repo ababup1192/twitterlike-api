@@ -5,7 +5,7 @@ require_relative 'utils/http_helper'
 require_relative 'entity/user'
 require_relative 'entity/session'
 
-# Sinatra Main controller
+# Sinatra User controller
 class UserRouter < Sinatra::Base
   include HttpHelper
 

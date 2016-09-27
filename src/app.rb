@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require_relative 'user_router'
+require_relative 'tweet_router'
 
 # Sinatra Main controller
 class MainApp < Sinatra::Base
@@ -12,4 +13,5 @@ class MainApp < Sinatra::Base
   end
 
   use UserRouter
+  use TweetRouter
 end
