@@ -23,7 +23,8 @@ class User
     pass_with_salt = Auth.generate_hashed_password_with_salt(hash[:password])
     hash_with_salt_time = hash.update(pass_with_salt.merge(create_time: time))
     id = @db.insert(hash_with_salt_time)
-    [:ok, id.to_json]
+    token = Session.new(@sqlite_db).save(id)
+    [:ok, { id: id, token: token }.to_json]
   rescue => _
     [:error, { error: 'This user already exists.' }.to_json]
   end

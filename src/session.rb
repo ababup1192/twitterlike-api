@@ -30,4 +30,8 @@ class Session
     @db.insert(new_session)
     token
   end
+
+  def auth(user_id, token)
+    @db.where(user_id: user_id, token: token).empty? == false
+  end
 end

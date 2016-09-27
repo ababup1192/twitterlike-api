@@ -16,9 +16,9 @@ class UserTest < Test::Unit::TestCase
     User.new(DB)
     DB.drop_table(:user)
     users = User.new(DB)
-    result = users.save(name: 'abc', password: 'password')
+    status, _ = users.save(name: 'abc', password: 'password')
 
-    assert_equal [:ok, 1.to_json], result
+    assert_equal :ok, status
   end
 
   def test_save_dup_error
