@@ -2,7 +2,7 @@ require 'sequel'
 require 'sqlite3'
 require 'json'
 require_relative 'session'
-require_relative 'auth'
+require_relative '../utils/auth'
 
 # Model User
 class User

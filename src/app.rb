@@ -1,9 +1,9 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
-require_relative 'http_helper'
-require_relative 'user'
-require_relative 'session'
+require_relative 'utils/http_helper'
+require_relative 'entity/user'
+require_relative 'entity/session'
 
 # Sinatra Main controller
 class MainApp < Sinatra::Base

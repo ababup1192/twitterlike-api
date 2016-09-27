@@ -1,6 +1,6 @@
 require 'test/unit'
 # load src file
-require_relative '../src/auth'
+require_relative '../src/utils/auth'
 
 # AuthTestClass
 class AuthTest < Test::Unit::TestCase
