@@ -58,7 +58,7 @@ class User
       name = user[:name]
       [:ok, { id: id, name: name, token: token }.to_json]
     else
-      [:error, { error: 'Authentication failed' }.to_json]
+      [:error, { error: 'Authentication failed.' }.to_json]
     end
   end
 
@@ -70,7 +70,7 @@ class User
     if user.empty? == false
       _auth_msg(user.first)
     else
-      [:error, { error: 'Authentication failed' }.to_json]
+      [:error, { error: 'Authentication failed.' }.to_json]
     end
   end
 
