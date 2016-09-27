@@ -40,17 +40,25 @@ class User
     end
   end
 
+  def auth_token(token)
+  end
+
   private def _auth(user, name, pass)
     salt = user[:salt]
     hashed_pass = Auth.hashed_password(pass, salt)
     user = @db.where(name: name, password: hashed_pass)
 
     if user.empty? == false
-      id = user.first[:id]
-      token = Session.new(@sqlite_db).save(id)
-      [:ok, { id: id, token: token }.to_json]
+      _auth_msg(user)
     else
       [:error, { error: 'Authentication failed' }.to_json]
     end
+  end
+
+  private def _auth_msg(user)
+    id = user.first[:id]
+    name = user.first[:name]
+    token = Session.new(@sqlite_db).save(id)
+    [:ok, { id: id, name: name, token: token }.to_json]
   end
 end
