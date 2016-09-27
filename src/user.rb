@@ -26,7 +26,16 @@ class User
     token = Session.new(@sqlite_db).save(id)
     [:ok, { id: id, token: token }.to_json]
   rescue => _
-    [:error, { error: 'This user already exists.' }.to_json]
+    [:error, { error: 'The user already exists.' }.to_json]
+  end
+
+  def find(id)
+    user = @db.where(id: id)
+    if user.empty? == false
+      [:ok, user.first.to_json]
+    else
+      [:error, { error: 'The user does not exist.' }.to_json]
+    end
   end
 
   def auth(hash)
@@ -36,7 +45,7 @@ class User
     if user.nil? == false
       _auth(user, name, pass)
     else
-      [:error, { error: 'This user does not exists.' }.to_json]
+      [:error, { error: 'The user does not exist.' }.to_json]
     end
   end
 

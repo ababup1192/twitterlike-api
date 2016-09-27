@@ -10,18 +10,25 @@ class MainApp < Sinatra::Base
     register Sinatra::Reloader
   end
 
-  get '/' do
-    'index'
-  end
-  get '/user' do
+  get '/users' do
     users = User.new.db
     users.all.to_json
   end
-  get '/session' do
+  get '/users/:id' do
+    status, message = User.new.find(id: params[:id].to_i)
+    case status
+    when :ok
+      message
+    when :error
+      status(400)
+      message
+    end
+  end
+  get '/sessions' do
     sessions = Session.new.db
     sessions.all.to_json
   end
-  post '/user', provides: :json do
+  post '/users', provides: :json do
     json_hash = JSON.parse(request.body.read, symbolize_names: true)
     status, message = User.new.save(json_hash)
     case status
@@ -32,7 +39,7 @@ class MainApp < Sinatra::Base
       message
     end
   end
-  post '/user/auth', provides: :json do
+  post '/users/auth', provides: :json do
     json_hash = JSON.parse(request.body.read, symbolize_names: true)
     status, message = User.new.auth(json_hash)
     case status
@@ -43,7 +50,7 @@ class MainApp < Sinatra::Base
       message
     end
   end
-  post '/user/auth/token', provides: :json do
+  post '/users/auth/token', provides: :json do
     json_hash = JSON.parse(request.body.read, symbolize_names: true)
     status, message = User.new.auth_token(json_hash)
     case status
