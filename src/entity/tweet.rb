@@ -28,4 +28,13 @@ class Tweet
       [:error, { error: 'The tweet user does not exist.' }.to_json]
     end
   end
+
+  def find(id)
+    tweet = @db.where(id: id)
+    if tweet.empty? == false
+      [:ok, tweet.first.to_json]
+    else
+      [:error, { error: 'The tweet does not exist.' }.to_json]
+    end
+  end
 end
