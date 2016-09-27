@@ -52,6 +52,7 @@ class User
   def auth_token(hash)
     id = hash[:id]
     token = hash[:token]
+
     if Session.new(@sqlite_db).auth(id, token)
       user = @db.where(id: id).first
       name = user[:name]
