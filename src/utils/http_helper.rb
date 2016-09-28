@@ -1,3 +1,6 @@
+require 'json'
+require 'sinatra/json'
+
 # HttpHelper Module
 module HttpHelper
   def json_request

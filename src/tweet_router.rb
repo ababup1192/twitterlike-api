@@ -23,6 +23,11 @@ class TweetRouter < Sinatra::Base
     create_response(result)
   end
 
+  get '/tweets/timeline/:user_id' do
+    result = Tweet.new.timeline(params[:user_id].to_i)
+    create_response(result)
+  end
+
   post '/tweets', provides: :json do
     result = Tweet.new.save(json_request)
     create_response(result)
