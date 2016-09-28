@@ -24,8 +24,7 @@ class SessionTest < Test::Unit::TestCase
     users = User.new(DB)
     sessions = Session.new(DB)
     _, id_with_token = users.save(name: 'abc', password: 'password')
-    id = JSON.parse(id_with_token, symbolize_names: true)[:id]
-    result = sessions.save(id)
+    result = sessions.save(id_with_token[:id])
 
     p sessions.db.all
 
@@ -43,9 +42,8 @@ class SessionTest < Test::Unit::TestCase
     users = User.new(DB)
     sessions = Session.new(DB)
     _, id_with_token = users.save(name: 'abc', password: 'password')
-    id_with_token_hash = JSON.parse(id_with_token, symbolize_names: true)
-    id = id_with_token_hash[:id]
-    token = id_with_token_hash[:token]
+    id = id_with_token[:id]
+    token = id_with_token[:token]
     result = sessions.auth(id, token)
 
     assert_true result
@@ -55,8 +53,7 @@ class SessionTest < Test::Unit::TestCase
     users = User.new(DB)
     sessions = Session.new(DB)
     _, id_with_token = users.save(name: 'abc', password: 'password')
-    id_with_token_hash = JSON.parse(id_with_token, symbolize_names: true)
-    id = id_with_token_hash[:id]
+    id = id_with_token[:id]
     result = sessions.auth(id, 'aaaaaaaaaaa')
 
     assert_false result

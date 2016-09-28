@@ -1,6 +1,5 @@
 require 'sequel'
 require 'sqlite3'
-require 'json'
 require_relative 'user'
 
 # Model Tweet
@@ -25,9 +24,9 @@ class Tweet
     if users.where(id: user_id).empty? == false
       new_tweet = { text: text, user_id: user_id, create_time: time }
       id = @db.insert(new_tweet)
-      [:ok, new_tweet.merge(id: id).to_json]
+      [:ok, new_tweet.merge(id: id)]
     else
-      [:error, { error: 'The tweet user does not exist.' }.to_json]
+      [:error, { error: 'The tweet user does not exist.' }]
     end
   end
 
@@ -35,9 +34,9 @@ class Tweet
     tweet = @db.where(id: id)
 
     if tweet.empty? == false
-      [:ok, tweet.first.to_json]
+      [:ok, tweet.first]
     else
-      [:error, { error: 'The tweet does not exist.' }.to_json]
+      [:error, { error: 'The tweet does not exist.' }]
     end
   end
 
@@ -45,9 +44,9 @@ class Tweet
     users = User.new(@sqlite_db).db
 
     if users.where(id: user_id).empty? == false
-      [:ok, @db.where(user_id: user_id).all.to_json]
+      [:ok, @db.where(user_id: user_id).all]
     else
-      [:error, { error: 'The tweet user does not exist.' }.to_json]
+      [:error, { error: 'The tweet user does not exist.' }]
     end
   end
 end

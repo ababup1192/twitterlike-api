@@ -8,10 +8,10 @@ module HttpHelper
     status, message = result
     case status
     when :ok
-      message
+      json message
     when :error
       status(error_code)
-      message
+      json message
     end
   end
 end

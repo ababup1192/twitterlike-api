@@ -1,6 +1,5 @@
 require 'sequel'
 require 'sqlite3'
-require 'json'
 require_relative 'session'
 require_relative '../utils/auth'
 
@@ -24,17 +23,17 @@ class User
     hash_with_salt_time = hash.update(pass_with_salt.merge(create_time: time))
     id = @db.insert(hash_with_salt_time)
     token = Session.new(@sqlite_db).save(id)
-    [:ok, { id: id, token: token }.to_json]
+    [:ok, { id: id, token: token }]
   rescue => _
-    [:error, { error: 'The user already exists.' }.to_json]
+    [:error, { error: 'The user already exists.' }]
   end
 
   def find(id)
     user = @db.where(id: id)
     if user.empty? == false
-      [:ok, user.first.to_json]
+      [:ok, user.first]
     else
-      [:error, { error: 'The user does not exist.' }.to_json]
+      [:error, { error: 'The user does not exist.' }]
     end
   end
 
@@ -45,7 +44,7 @@ class User
     if user.nil? == false
       _auth(user, name, pass)
     else
-      [:error, { error: 'The user does not exist.' }.to_json]
+      [:error, { error: 'The user does not exist.' }]
     end
   end
 
@@ -56,9 +55,9 @@ class User
     if Session.new(@sqlite_db).auth(id, token)
       user = @db.where(id: id).first
       name = user[:name]
-      [:ok, { id: id, name: name, token: token }.to_json]
+      [:ok, { id: id, name: name, token: token }]
     else
-      [:error, { error: 'Authentication failed.' }.to_json]
+      [:error, { error: 'Authentication failed.' }]
     end
   end
 
@@ -70,7 +69,7 @@ class User
     if user.empty? == false
       _auth_msg(user.first)
     else
-      [:error, { error: 'Authentication failed.' }.to_json]
+      [:error, { error: 'Authentication failed.' }]
     end
   end
 
@@ -78,6 +77,6 @@ class User
     id = user[:id]
     name = user[:name]
     token = Session.new(@sqlite_db).save(id)
-    [:ok, { id: id, name: name, token: token }.to_json]
+    [:ok, { id: id, name: name, token: token }]
   end
 end

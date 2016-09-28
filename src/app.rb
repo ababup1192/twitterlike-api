@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require_relative 'user_router'
 require_relative 'tweet_router'
 

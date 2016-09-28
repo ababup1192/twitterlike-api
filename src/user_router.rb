@@ -11,7 +11,7 @@ class UserRouter < Sinatra::Base
 
   get '/users' do
     users = User.new.db
-    users.all.to_json
+    json users.all
   end
 
   get '/users/:id' do
@@ -21,7 +21,7 @@ class UserRouter < Sinatra::Base
 
   get '/sessions' do
     sessions = Session.new.db
-    sessions.all.to_json
+    json sessions.all
   end
 
   post '/users', provides: :json do

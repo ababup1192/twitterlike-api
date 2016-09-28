@@ -1,6 +1,5 @@
 require 'test/unit'
 require 'sequel'
-require 'json'
 # load src file
 require_relative '../src/entity/user'
 require_relative '../src/entity/tweet'
@@ -32,16 +31,16 @@ class UserTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok,
-                { id: 1, text: TEXT1, user_id: 1, create_time: TIME1.to_s }]
-    status, json = tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
+                { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 }]
+    result = tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
 
-    assert_equal expected, [status, JSON.parse(json, symbolize_names: true)]
+    assert_equal expected, result
   end
 
   def test_save_fail
     tweets = Tweet.new(DB)
     result = tweets.save(user_id: 1, text: 'fail tweet')
-    err_msg = { error: 'The tweet user does not exist.' }.to_json.freeze
+    err_msg = { error: 'The tweet user does not exist.' }
 
     assert_equal [:error, err_msg], result
   end
@@ -51,12 +50,12 @@ class UserTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok,
-                { id: 2, text: TEXT2, user_id: 1, create_time: TIME2.to_s }]
+                { id: 2, text: TEXT2, user_id: 1, create_time: TIME2 }]
 
     tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
-    status, json = tweets.save({ user_id: 1, text: TEXT2 }, TIME2)
+    result = tweets.save({ user_id: 1, text: TEXT2 }, TIME2)
 
-    assert_equal expected, [status, JSON.parse(json, symbolize_names: true)]
+    assert_equal expected, result
   end
 
   def test_find_by_user_id
@@ -64,21 +63,21 @@ class UserTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok, [
-      { id: 1, text: TEXT1, user_id: 1, create_time: TIME1.to_s },
-      { id: 2, text: TEXT2, user_id: 1, create_time: TIME2.to_s }
+      { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 },
+      { id: 2, text: TEXT2, user_id: 1, create_time: TIME2 }
     ]]
 
     tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
     tweets.save({ user_id: 1, text: TEXT2 }, TIME2)
 
-    status, json = tweets.find_by_user_id(1)
+    result = tweets.find_by_user_id(1)
 
-    assert_equal expected, [status, JSON.parse(json, symbolize_names: true)]
+    assert_equal expected, result
   end
 
   def test_find_by_user_id_fail
     tweets = Tweet.new(DB)
-    err_msg = { error: 'The tweet user does not exist.' }.to_json.freeze
+    err_msg = { error: 'The tweet user does not exist.' }
     result = tweets.find_by_user_id(-1)
 
     assert_equal [:error, err_msg], result
