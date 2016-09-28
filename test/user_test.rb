@@ -76,8 +76,6 @@ class UserTest < Test::Unit::TestCase
     _, user = users.save(name: 'abc', password: 'password')
     status, uj = users.auth_token(id: user[:id], token: user[:token])
 
-    p uj
-
     assert_equal :ok, status
   end
 

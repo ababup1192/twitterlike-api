@@ -45,7 +45,6 @@ class Tweet
 
     if users.where(id: user_id).empty? == false
       tweets = @db.where(user_id: user_id).all
-      p tweets
       [:ok, tweets]
     else
       [:error, { error: 'The tweet user does not exist.' }]

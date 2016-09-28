@@ -10,6 +10,7 @@ class SessionTest < Test::Unit::TestCase
 
   def setup
     User.new(DB)
+    Session.new(DB)
     DB.drop_table(:user)
     DB.drop_table(:session)
   end
@@ -25,8 +26,6 @@ class SessionTest < Test::Unit::TestCase
     sessions = Session.new(DB)
     _, id_with_token = users.save(name: 'abc', password: 'password')
     result = sessions.save(id_with_token[:id])
-
-    p sessions.db.all
 
     assert_not_nil result
   end

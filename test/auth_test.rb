@@ -8,8 +8,6 @@ class AuthTest < Test::Unit::TestCase
     password = 'password'
     hashed_pass = Auth.generate_hashed_password(password)
 
-    p hashed_pass
-
     assert_not_equal password, hashed_pass
   end
 
@@ -17,8 +15,6 @@ class AuthTest < Test::Unit::TestCase
     password = 'password'
     stretched_pass = Auth.stretch(password)
     hashed_pass = Auth.generate_hashed_password(password)
-
-    p stretched_pass
 
     assert_not_equal hashed_pass, stretched_pass
   end
@@ -37,7 +33,6 @@ class AuthTest < Test::Unit::TestCase
     password = 'password'
     pass_with_salt = Auth.splinkle_salt(password, 15)
     salt_length = (15 * (4.0 / 3)).to_i
-    p pass_with_salt
 
     expected = [password.length + salt_length, salt_length]
     actual = [pass_with_salt[:password].length, pass_with_salt[:salt].length]
@@ -48,8 +43,6 @@ class AuthTest < Test::Unit::TestCase
   def test_generate_hashed_password_with_salt
     password = 'password'
     pass_with_salt = Auth.generate_hashed_password_with_salt(password)
-
-    p pass_with_salt
 
     assert_not_equal password, pass_with_salt[:password]
   end

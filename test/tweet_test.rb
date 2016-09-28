@@ -5,7 +5,7 @@ require_relative '../src/entity/user'
 require_relative '../src/entity/tweet'
 
 # TweetTestClass
-class UserTest < Test::Unit::TestCase
+class TweetTest < Test::Unit::TestCase
   DB = Sequel.sqlite('data/test.sqlite3')
   TIME1 = Time.local(2016, 10, 1, 0, 0, 0)
   TIME2 = Time.local(2016, 10, 1, 0, 1, 0)
@@ -20,9 +20,9 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_db
-    user_db = User.new(DB).db
+    tweet_db = Tweet.new(DB).db
 
-    assert_not_nil user_db
+    assert_not_nil tweet_db
   end
 
   def test_save
