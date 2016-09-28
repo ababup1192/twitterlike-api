@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/json'
+require 'json'
 require_relative 'utils/http_helper'
 require_relative 'entity/tweet'
 
@@ -14,12 +15,12 @@ class TweetRouter < Sinatra::Base
   end
 
   get '/tweets/:id' do
-    result = Tweet.new.find(id: params[:id].to_i)
+    result = Tweet.new.find(params[:id].to_i)
     create_response(result)
   end
 
   get '/tweets/user/:user_id' do
-    result = Tweet.new.find_by_user_id(id: params[:user_id].to_i)
+    result = Tweet.new.find_by_user_id(params[:user_id].to_i)
     create_response(result)
   end
 

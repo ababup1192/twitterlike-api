@@ -15,7 +15,7 @@ class UserRouter < Sinatra::Base
   end
 
   get '/users/:id' do
-    result = User.new.find(id: params[:id].to_i)
+    result = User.new.find(params[:id].to_i)
     create_response(result)
   end
 

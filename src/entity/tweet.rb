@@ -44,7 +44,9 @@ class Tweet
     users = User.new(@sqlite_db).db
 
     if users.where(id: user_id).empty? == false
-      [:ok, @db.where(user_id: user_id).all]
+      tweets = @db.where(user_id: user_id).all
+      p tweets
+      [:ok, tweets]
     else
       [:error, { error: 'The tweet user does not exist.' }]
     end
