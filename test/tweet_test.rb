@@ -3,6 +3,7 @@ require 'sequel'
 # load src file
 require_relative '../src/entity/user'
 require_relative '../src/entity/tweet'
+require_relative '../src/entity/follow'
 
 # TweetTestClass
 class TweetTest < Test::Unit::TestCase
@@ -15,8 +16,10 @@ class TweetTest < Test::Unit::TestCase
   def setup
     User.new(DB)
     Tweet.new(DB)
+    Follow.new(DB)
     DB.drop_table(:user)
     DB.drop_table(:tweet)
+    DB.drop_table(:follow)
   end
 
   def test_db
@@ -81,5 +84,28 @@ class TweetTest < Test::Unit::TestCase
     result = tweets.find_by_user_id(-1)
 
     assert_equal [:error, err_msg], result
+  end
+
+  def test_timeline
+    _create_user_test_timeline
+    tweets = Tweet.new(DB)
+
+    expected = [:ok, [
+      { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 },
+      { id: 2, text: TEXT2, user_id: 2, create_time: TIME2 }
+    ]]
+
+    tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
+    tweets.save({ user_id: 2, text: TEXT2 }, TIME2)
+    result = tweets.timeline(1)
+
+    assert_equal expected, result
+  end
+
+  private def _create_user_test_timeline
+    users = User.new(DB)
+    users.save(name: 'abc', password: 'password')
+    users.save(name: 'efg', password: 'password')
+    Follow.new(DB).save(follow_id: 2, user_id: 1)
   end
 end

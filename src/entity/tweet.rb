@@ -54,11 +54,14 @@ class Tweet
 
   def timeline(user_id)
     users = User.new(@sqlite_db).db
+    Follow.new(@sqlite_db)
 
     if users.where(id: user_id).empty? == false
-      tweets = @db.join(:follows, follow_id: :user_id)
+      tweets = @db.join(:follow, follow_id: :user_id).where(
+        follow__user_id: user_id
+      ).select(:tweet__id, :text, :tweet__user_id, :tweet__create_time).all
 
-      [:ok, tweets.all]
+      [:ok, tweets]
     else
       [:error, { error: 'The tweet user does not exist.' }]
     end

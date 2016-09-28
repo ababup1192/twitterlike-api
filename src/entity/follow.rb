@@ -26,7 +26,7 @@ class Follow
     _save(user_id, follow_id, follow_user, followed_user, time)
   end
 
-  def _save(user_id, follow_id, follow_user, followed_user, time)
+  private def _save(user_id, follow_id, follow_user, followed_user, time)
     if follow_user && followed_user
       new_follow = { follow_id: follow_id, user_id: user_id, create_time: time }
       [:ok, new_follow.merge(id: @db.insert(new_follow))]
