@@ -33,10 +33,21 @@ class Tweet
 
   def find(id)
     tweet = @db.where(id: id)
+
     if tweet.empty? == false
       [:ok, tweet.first.to_json]
     else
       [:error, { error: 'The tweet does not exist.' }.to_json]
+    end
+  end
+
+  def find_by_user_id(user_id)
+    users = User.new(@sqlite_db).db
+
+    if users.where(id: user_id).empty? == false
+      [:ok, @db.where(user_id: user_id).all.to_json]
+    else
+      [:error, { error: 'The tweet user does not exist.' }.to_json]
     end
   end
 end

@@ -2,7 +2,7 @@ require 'test/unit'
 require 'sequel'
 # load src file
 require_relative '../src/entity/user'
-require_relative '../src/utils/session'
+require_relative '../src/entity/session'
 
 # UserTestClass
 class SessionTest < Test::Unit::TestCase
