@@ -30,7 +30,7 @@ class FollowTest < Test::Unit::TestCase
     follows = Follow.new(DB)
 
     expected = [:ok,
-                { id: 1, follow_id: 2, user_id: 1, create_time: TIME1 }]
+                { id: 3, follow_id: 2, user_id: 1, create_time: TIME1 }]
     result = follows.save({ follow_id: 2, user_id: 1 }, TIME1)
 
     assert_equal expected, result
@@ -54,9 +54,9 @@ class FollowTest < Test::Unit::TestCase
     follows = Follow.new(DB)
 
     expected = [:ok,
-                { id: 1, follow_id: 2, user_id: 1, create_time: TIME1 }]
+                { id: 3, follow_id: 2, user_id: 1, create_time: TIME1 }]
     follows.save({ follow_id: 2, user_id: 1 }, TIME1)
-    result = follows.find(1)
+    result = follows.find(3)
 
     assert_equal expected, result
   end

@@ -1,6 +1,7 @@
 require 'sequel'
 require 'sqlite3'
 require_relative 'session'
+require_relative 'follow'
 require_relative '../utils/auth'
 
 # Model User
@@ -22,6 +23,7 @@ class User
     pass_with_salt = Auth.generate_hashed_password_with_salt(hash[:password])
     hash_with_salt_time = hash.update(pass_with_salt.merge(create_time: time))
     id = @db.insert(hash_with_salt_time)
+    Follow.new(@sqlite_db).save(follow_id: id, user_id: id)
     token = Session.new(@sqlite_db).save(id)
     [:ok, { id: id, token: token }]
   rescue => _

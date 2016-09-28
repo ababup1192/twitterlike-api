@@ -1,6 +1,7 @@
 require 'sequel'
 require 'sqlite3'
 require_relative 'user'
+require_relative 'follow'
 
 # Model Tweet
 class Tweet
@@ -46,6 +47,18 @@ class Tweet
     if users.where(id: user_id).empty? == false
       tweets = @db.where(user_id: user_id).all
       [:ok, tweets]
+    else
+      [:error, { error: 'The tweet user does not exist.' }]
+    end
+  end
+
+  def timeline(user_id)
+    users = User.new(@sqlite_db).db
+
+    if users.where(id: user_id).empty? == false
+      tweets = @db.join(:follows, follow_id: :user_id)
+
+      [:ok, tweets.all]
     else
       [:error, { error: 'The tweet user does not exist.' }]
     end
