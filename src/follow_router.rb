@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/json'
-require 'json'
 require_relative 'utils/http_helper'
 require_relative 'entity/follow'
 

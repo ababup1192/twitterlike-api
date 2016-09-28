@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require_relative 'utils/http_helper'
 require_relative 'entity/user'
 require_relative 'entity/session'
