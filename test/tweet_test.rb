@@ -34,7 +34,8 @@ class TweetTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok,
-                { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 }]
+                { id: 1, text: TEXT1, user_id: 1,
+                  name: 'abc', create_time: TIME1 }]
     result = tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
 
     assert_equal expected, result
@@ -53,7 +54,8 @@ class TweetTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok,
-                { id: 2, text: TEXT2, user_id: 1, create_time: TIME2 }]
+                { id: 2, text: TEXT2, user_id: 1, name: 'abc',
+                  create_time: TIME2 }]
 
     tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
     result = tweets.save({ user_id: 1, text: TEXT2 }, TIME2)
@@ -66,8 +68,8 @@ class TweetTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok, [
-      { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 },
-      { id: 2, text: TEXT2, user_id: 1, create_time: TIME2 }
+      { id: 1, text: TEXT1, user_id: 1, name: 'abc', create_time: TIME1 },
+      { id: 2, text: TEXT2, user_id: 1, name: 'abc', create_time: TIME2 }
     ]]
 
     tweets.save({ user_id: 1, text: TEXT1 }, TIME1)
@@ -91,8 +93,8 @@ class TweetTest < Test::Unit::TestCase
     tweets = Tweet.new(DB)
 
     expected = [:ok, [
-      { id: 1, text: TEXT1, user_id: 1, create_time: TIME1 },
-      { id: 2, text: TEXT2, user_id: 2, create_time: TIME2 }
+      { id: 1, text: TEXT1, user_id: 1, name: 'abc', create_time: TIME1 },
+      { id: 2, text: TEXT2, user_id: 2, name: 'efg', create_time: TIME2 }
     ]]
 
     tweets.save({ user_id: 1, text: TEXT1 }, TIME1)

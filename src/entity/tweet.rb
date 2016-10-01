@@ -11,6 +11,7 @@ class Tweet
       primary_key :id
       String :text
       Integer :user_id
+      String :name
       Time :create_time
     end
     @sqlite_db = db
@@ -21,14 +22,9 @@ class Tweet
     user_id = hash[:user_id]
     text = hash[:text]
     users = User.new(@sqlite_db).db
+    user = users.where(id: user_id)
 
-    if users.where(id: user_id).empty? == false
-      new_tweet = { text: text, user_id: user_id, create_time: time }
-      id = @db.insert(new_tweet)
-      [:ok, new_tweet.merge(id: id)]
-    else
-      [:error, { error: 'The tweet user does not exist.' }]
-    end
+    _save(user, text, time)
   end
 
   def find(id)
@@ -64,11 +60,23 @@ class Tweet
     end
   end
 
+  private def _save(user, text, time)
+    if user.empty? == false
+      u = user.first
+      new_tweet = { text: text, user_id: u[:id],
+                    name: u[:name], create_time: time }
+      id = @db.insert(new_tweet)
+      [:ok, new_tweet.merge(id: id)]
+    else
+      [:error, { error: 'The tweet user does not exist.' }]
+    end
+  end
+
   private def _timeline(user_id)
     @db.join(:follow, follow_id: :user_id).where(
       follow__user_id: user_id
     ).order(:tweet__id).select(
-      :tweet__id, :text, :tweet__user_id, :tweet__create_time
+      :tweet__id, :text, :tweet__user_id, :tweet__name, :tweet__create_time
     ).all
   end
 end

@@ -83,7 +83,7 @@ class UserTest < Test::Unit::TestCase
     users = User.new(DB)
     _, user = users.save(name: 'abc', password: 'password')
     result = users.auth_token(id: user[:id], token: 'bbbb')
-    err_msg = { error: 'Authentication failed.' }
+    err_msg = { error: 'Session Timeout.' }
 
     assert_equal [:error, err_msg], result
   end
