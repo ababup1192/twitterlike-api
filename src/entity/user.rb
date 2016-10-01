@@ -59,7 +59,7 @@ class User
       name = user[:name]
       [:ok, { id: id, name: name, token: token }]
     else
-      [:error, { error: 'Authentication failed.' }]
+      [:error, { error: 'Session Timeout.' }]
     end
   end
 
