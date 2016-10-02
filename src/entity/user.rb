@@ -63,6 +63,15 @@ class User
     end
   end
 
+  def unfollowers(user_id)
+    follows = Follow.new(@sqlite_db)
+    followers = follows.db.where(user_id: user_id).all.map do |follow|
+      follow[:follow_id]
+    end
+
+    db.exclude(id: followers).all
+  end
+
   private def _auth(user, name, pass)
     salt = user[:salt]
     hashed_pass = Auth.hashed_password(pass, salt)

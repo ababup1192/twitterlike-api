@@ -18,6 +18,10 @@ class UserRouter < Sinatra::Base
     create_response(result)
   end
 
+  get '/users/:id/unfollow' do
+    json User.new.unfollowers(params[:id].to_i)
+  end
+
   get '/sessions' do
     sessions = Session.new.db
     json sessions.all

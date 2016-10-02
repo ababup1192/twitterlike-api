@@ -18,6 +18,9 @@ class FollowRouter < Sinatra::Base
     create_response(result)
   end
 
+  get 'follows/:user_id/unfollow' do
+  end
+
   post '/follows', provides: :json do
     result = Follow.new.save(json_request)
     create_response(result)

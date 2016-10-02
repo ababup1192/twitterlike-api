@@ -3,6 +3,7 @@ require 'sequel'
 # load src file
 require_relative '../src/entity/user'
 require_relative '../src/entity/session'
+require_relative '../src/entity/follow'
 
 # UserTestClass
 class UserTest < Test::Unit::TestCase
@@ -11,8 +12,10 @@ class UserTest < Test::Unit::TestCase
   def setup
     User.new(DB)
     Session.new(DB)
+    Follow.new(DB)
     DB.drop_table(:user)
     DB.drop_table(:session)
+    DB.drop_table(:follow)
   end
 
   def test_db
@@ -74,7 +77,7 @@ class UserTest < Test::Unit::TestCase
   def test_auth_token
     users = User.new(DB)
     _, user = users.save(name: 'abc', password: 'password')
-    status, uj = users.auth_token(id: user[:id], token: user[:token])
+    status, = users.auth_token(id: user[:id], token: user[:token])
 
     assert_equal :ok, status
   end
@@ -86,5 +89,20 @@ class UserTest < Test::Unit::TestCase
     err_msg = { error: 'Session Timeout.' }
 
     assert_equal [:error, err_msg], result
+  end
+
+  def test_unfollowers
+    users = User.new(DB)
+    follows = Follow.new(DB)
+    users.save(name: 'abc', password: 'password')
+    users.save(name: 'efg', password: 'password')
+    users.save(name: 'hij', password: 'password')
+    users.save(name: 'klm', password: 'password')
+    follows.save(follow_id: 3, user_id: 1)
+
+    unfollowers = users.unfollowers(1).map { |user| user[:id] }
+    expected = [2, 4]
+
+    assert_equal expected, unfollowers
   end
 end
