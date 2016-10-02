@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/cross_origin'
 require 'sinatra/json'
 require_relative 'utils/http_helper'
 require_relative 'entity/tweet'
@@ -8,7 +9,13 @@ require_relative 'entity/tweet'
 class TweetRouter < Sinatra::Base
   include HttpHelper
 
+  configure do
+    register Sinatra::Reloader
+    register Sinatra::CrossOrigin
+  end
+
   get '/tweets' do
+    cross_origin
     tweets = Tweet.new.db
     json tweets.all
   end

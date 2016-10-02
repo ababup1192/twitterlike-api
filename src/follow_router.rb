@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/cross_origin'
 require 'sinatra/json'
 require_relative 'utils/http_helper'
 require_relative 'entity/follow'
@@ -8,7 +9,13 @@ require_relative 'entity/follow'
 class FollowRouter < Sinatra::Base
   include HttpHelper
 
+  configure do
+    register Sinatra::Reloader
+    register Sinatra::CrossOrigin
+  end
+
   get '/follows' do
+    cross_origin
     follows = Follow.new.db
     json follows.all
   end
@@ -16,9 +23,6 @@ class FollowRouter < Sinatra::Base
   get '/follows/:id' do
     result = Follow.new.find(params[:id].to_i)
     create_response(result)
-  end
-
-  get 'follows/:user_id/unfollow' do
   end
 
   post '/follows', provides: :json do

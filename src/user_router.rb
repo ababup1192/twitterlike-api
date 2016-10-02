@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/cross_origin'
 require_relative 'utils/http_helper'
 require_relative 'entity/user'
 require_relative 'entity/session'
@@ -8,7 +9,13 @@ require_relative 'entity/session'
 class UserRouter < Sinatra::Base
   include HttpHelper
 
+  configure do
+    register Sinatra::Reloader
+    register Sinatra::CrossOrigin
+  end
+
   get '/users' do
+    cross_origin
     users = User.new.db
     json users.all
   end
@@ -19,10 +26,12 @@ class UserRouter < Sinatra::Base
   end
 
   get '/users/:id/unfollow' do
+    cross_origin
     json User.new.unfollowers(params[:id].to_i)
   end
 
   get '/sessions' do
+    cross_origin
     sessions = Session.new.db
     json sessions.all
   end

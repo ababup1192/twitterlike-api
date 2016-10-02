@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/cross_origin'
 require_relative 'user_router'
 require_relative 'tweet_router'
 require_relative 'follow_router'
@@ -8,8 +9,9 @@ require_relative 'follow_router'
 class MainApp < Sinatra::Base
   include HttpHelper
 
-  configure :development do
+  configure do
     register Sinatra::Reloader
+    register Sinatra::CrossOrigin
   end
 
   use UserRouter

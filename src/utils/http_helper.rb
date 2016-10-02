@@ -11,6 +11,7 @@ module HttpHelper
     status, message = result
     case status
     when :ok
+      cross_origin
       json message
     when :error
       status(error_code)
